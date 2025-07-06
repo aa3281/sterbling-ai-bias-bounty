@@ -44,6 +44,31 @@ format:
 .PHONY: test
 test:
 	python -m pytest tests
+	pytest tests/ -v
+
+
+## Run tests with coverage report
+.PHONY: test-cov
+test-cov:
+	pytest tests/ --cov=sterbling_ai_bias_bounty --cov-report=html --cov-report=term
+
+
+## Run specific test file
+.PHONY: test-dataset
+test-dataset:
+	pytest tests/test_dataset.py -v
+
+
+## Run tests in parallel (faster)
+.PHONY: test-parallel
+test-parallel:
+	pytest tests/ -n auto
+
+
+## Clean test artifacts
+.PHONY: test-clean
+test-clean:
+	rm -rf .pytest_cache/ htmlcov/ .coverage
 
 
 ## Set up Python interpreter environment
