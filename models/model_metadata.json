@@ -1,0 +1,10 @@
+{
+  "best_model": "LogisticRegression",
+  "best_auc": 0.6931937602627258,
+  "all_models": {
+    "LogisticRegression": 0.6931937602627258,
+    "RandomForest": 0.6853920361247947,
+    "XGBoost": 0.6910611658456486,
+    "LightGBM": 0.68935447454844
+  }
+}
