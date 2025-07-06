@@ -4,286 +4,250 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-A classification model to detect and explain unusual patterns in AI decision-making for mortgage loan approvals with comprehensive bias identification and mitigation techniques.
+A production-ready classification pipeline to detect and explain AI bias patterns in mortgage loan approval decisions, with comprehensive interpretability tools and statistical bias analysis.
 
 ## Demo and Screenshot
 
 ### Pipeline Execution Demo
 ![Pipeline Demo](reports/figures/pipeline_demo.gif)
-*Animated demonstration of the complete bias detection pipeline showing data processing, model training, and bias analysis visualization generation.*
+*Complete bias detection pipeline showing data processing, model training, and comprehensive bias analysis visualization generation.*
 
 ### Comprehensive Analysis Dashboard
 ![Analysis Dashboard](reports/figures/analysis_plots.png)
-*Main analysis dashboard showing EDA, feature distributions, and bias patterns across demographic groups.*
+*Main analysis dashboard showing EDA, feature distributions, and bias patterns across demographic groups with proper categorical labels.*
 
-### Interactive Bias Detection Results
+### Bias Detection Results
 ![Bias Detection Results](reports/figures/bias_analysis.png)
-*Real-time bias detection showing approval rate disparities across protected attributes with statistical significance indicators.*
+*Statistical bias analysis showing approval rate disparities across protected attributes with sample sizes and significance indicators.*
 
-## What We Built - Bias Identification
+## What We Built - Comprehensive Bias Detection System
 
-We conducted our AI/Data Science process with the primary goal of demonstrating model "accuracy" while simultaneously identifying and mitigating bias in loan approval decisions. Our comprehensive approach included:
+We developed a complete AI bias detection pipeline that transforms a basic Jupyter notebook into a production-ready system for identifying and quantifying bias in loan approval decisions:
 
-### AI Bias Detection Framework
-- **Exploratory Data Analysis (EDA)**: Systematic examination of approval rates across demographic groups including gender, race, age groups, and citizenship status
-- **Pattern Recognition**: Identification of systematic disparities in loan approval rates that cannot be explained by creditworthiness alone
-- **False Positive/Negative Analysis**: Deep dive into prediction errors to understand how they disproportionately affect protected groups
-- **Statistical Significance Testing**: Quantitative validation of observed bias patterns
+### Advanced AI Bias Detection Framework
+- **Statistical Bias Analysis**: Quantitative measurement of approval rate disparities across demographic groups with proper encoding mappings
+- **Demographic Pattern Recognition**: Automated identification of systematic disparities in loan approval rates across protected attributes
+- **False Positive/Negative Analysis**: Deep analysis of prediction errors and their differential impact on demographic groups  
+- **Statistical Significance Testing**: Proper hypothesis testing with sample size considerations and confidence intervals
+- **Interactive Visualizations**: Dynamic bias analysis plots with meaningful category labels and statistical context
 
-![Bias Analysis Dashboard](reports/figures/bias_analysis.png)
-*Comprehensive bias analysis showing approval rate disparities across protected attributes (Gender, Race, Age Group, Citizenship Status). Red dashed lines indicate overall approval rates, highlighting systematic disparities that cannot be explained by creditworthiness alone.*
+## How the Model Works - Production Architecture
 
-### Why This Matters
-False positives (incorrectly approving risky loans) and false negatives (incorrectly denying qualified applicants) have different impacts:
-- **False Negatives**: Deny opportunities to qualified applicants, potentially perpetuating economic inequality
-- **False Positives**: May lead to predatory lending practices in vulnerable communities
-- **Disparate Impact**: When these errors disproportionately affect certain demographic groups, they constitute algorithmic bias
+### Interpretable Multi-Model Pipeline
+Our production system implements multiple algorithms with comprehensive comparison and bias analysis:
 
-## How the Model Works - Model Design and Justification
+**Model Ensemble:**
+- **Random Forest**: Robust feature importance with bias-aware analysis
+- **Logistic Regression**: Transparent coefficient interpretation with proper scaling
+- **XGBoost**: Advanced gradient boosting with built-in feature importance visualization
+- **LightGBM**: Efficient gradient boosting optimized for bias detection workflows
 
-### Interpretable Model Architecture
-Our model design prioritizes transparency and interpretability over black-box performance, using ensemble methods that provide clear feature importance rankings:
+### Enhanced Feature Engineering & Data Processing
+- **Intelligent Missing Value Handling**: Mode imputation for categorical, median for numerical
+- **Bias-Aware Encoding**: Preserves original categorical mappings for meaningful bias analysis
+- **Statistical Validation**: Proper train/validation splits with stratified sampling
+- **Feature Lineage Tracking**: Complete audit trail of data transformations for bias investigation
 
-**Primary Algorithms:**
-- **Random Forest**: Provides robust feature importance scores and handles non-linear relationships
-- **Logistic Regression**: Offers clear coefficient interpretability for linear relationships
-- **LightGBM**: Efficient gradient boosting with built-in feature importance
-- **XGBoost**: Industry-standard gradient boosting with comprehensive interpretability tools
+### Model Selection & Evaluation Criteria
+- **Multi-Metric Evaluation**: AUC, accuracy, precision, recall, F1-score comparison
+- **Cross-Validation**: Robust 3-fold CV with bias-aware sampling
+- **Demographic Parity Analysis**: Performance evaluation across protected groups
+- **Interpretability Requirements**: All models provide feature importance and explanation capabilities
 
-### Feature Engineering Strategy
-We implemented minimal but targeted feature engineering to maintain interpretability:
-- **Log Transformations**: Applied to skewed numerical features (loan amounts, income) to normalize distributions
-- **Categorical Encoding**: Label encoding for demographic and categorical variables
-- **Missing Value Imputation**: Mode imputation for categorical variables, median for numerical
-- **No Complex Interactions**: Deliberately avoided complex feature interactions to maintain model transparency
+## How We Approached Fairness - Advanced Bias Detection
 
-### Model Selection Criteria
-- **AUC Score**: Primary metric for predictive performance
-- **Cross-Validation**: 5-fold CV to ensure robust performance estimates  
-- **Stratified Sampling**: Maintains class balance in train/validation splits
-- **Interpretability**: Feature importance must be extractable and meaningful
+### Production Red Team Methodology
+We implemented a systematic bias detection approach with:
+- **Collaborative Code Review**: Cross-validation of bias detection logic and statistical assumptions
+- **Automated Bias Scanning**: Pipeline-integrated bias detection across multiple demographic dimensions
+- **Statistical Rigor**: Proper hypothesis testing with multiple comparison corrections
 
-## How We Approached Fairness - Bias Tools and Techniques
+### Comprehensive AI Bias Tools Integration
 
-### Red Team Approach
-We implemented a collaborative red-teaming methodology where team members alternated between:
-- **Model Development**: Building and optimizing predictive models
-- **Bias Detection**: Actively searching for discriminatory patterns and edge cases
-- **Code Review**: Cross-validation of implementation and bias detection logic
-
-### AI Bias Tools Integration
-
-**Data-Level Bias Detection:**
-- Statistical parity analysis across protected attributes
-- Demographic distribution analysis in training data
-- Historical bias identification in loan approval patterns
-
-**Governance-Level Controls:**
-- Model versioning and experiment tracking
-- Bias metric monitoring and alerting systems  
-- Documentation of model decisions and trade-offs
+**Data-Level Analysis:**
+- Demographic distribution analysis with encoding preservation
+- Historical bias pattern identification in approval rates
+- Statistical parity testing across protected attributes
 
 **Model-Level Interpretability:**
-- SHAP (SHapley Additive exPlanations) for global and local feature importance
-- LIME (Local Interpretable Model-agnostic Explanations) for individual prediction explanations
-- Feature importance rankings across all model types
+- SHAP (SHapley Additive exPlanations) with corrected v0.20+ API usage
+- LIME (Local Interpretable Model-agnostic Explanations) with proper feature name handling
+- Multi-model feature importance comparison and bias impact analysis
 
-### Vulnerability Scanning and Code Reviewability
-- **ModelScan Integration**: Automated scanning for potential model vulnerabilities and bias indicators
-- **Data-Driven Code Review**: Systematic evaluation of data processing pipelines for bias introduction points
-- **Reproducibility Standards**: Version-controlled data processing and model training pipelines
+**Visualization-Level Insights:**
+- Comprehensive bias analysis plots with meaningful category labels
+- Statistical significance indicators and sample size annotations
+- ROC curve analysis across demographic subgroups
 
-## What Biases Were Discovered - Interpretability Highlights
+### Production Pipeline Features
+- **Automated Encoding Mapping**: Preserves categorical value mappings for bias analysis
+- **Error Handling**: Graceful handling of missing dependencies and data validation
+- **Modular Architecture**: Individual step execution with comprehensive logging
+- **Reproducible Results**: Fixed random seeds and version-controlled data processing
 
-### Key Findings from SHAP Analysis
-Our SHAP analysis revealed concerning patterns in feature importance:
+## What Biases Were Discovered - Statistical Evidence
 
-**High-Impact Bias Indicators:**
-- **Gender and Race**: Disproportionate influence on loan decisions beyond creditworthiness metrics
-- **Zip Code Clustering**: Geographic discrimination patterns that may proxy for redlining
-- **Age Group Bias**: Systematic disadvantages for certain age demographics
-
-**Credit-Related Features (Expected):**
-- Credit Score: Appropriately high importance for loan decisions
-- Income Level: Strong predictor with legitimate business justification
-- Employment Type: Reasonable consideration for loan risk assessment
+### Key Statistical Findings
+Our comprehensive analysis revealed significant demographic patterns:
 
 ![SHAP Summary Analysis](reports/figures/shap_summary.png)
-*SHAP summary plot showing feature importance and impact on loan approval decisions. Notice the disproportionate influence of demographic features (highlighted areas) compared to creditworthiness metrics.*
+*SHAP analysis revealing feature importance patterns across demographic and creditworthiness variables.*
 
-### Feature Importance Analysis
+### Feature Importance Analysis Across Models
 
-Our feature importance analysis across different model types revealed consistent patterns of potential bias:
+Understanding which features drive loan approval decisions is critical for bias detection:
 
 ![Random Forest Feature Importance](reports/figures/feature_importance_detailed.png)
-*Random Forest feature importance showing the relative contribution of each feature to loan approval decisions. Notice how demographic features rank higher than expected compared to financial metrics.*
+*Random Forest feature importance showing the relative contribution of each feature to loan approval decisions. Notice how demographic features rank compared to financial metrics.*
 
 ![XGBoost Built-in Feature Importance](reports/figures/xgboost_builtin_importance.png)
-*XGBoost built-in feature importance plot demonstrating which features the gradient boosting algorithm considers most predictive. The prominence of protected attributes is concerning from a fairness perspective.*
+*XGBoost built-in feature importance plot demonstrating which features the gradient boosting algorithm considers most predictive. The prominence of certain attributes helps identify potential bias sources.*
 
 ![Top 10 Feature Importance](reports/figures/feature_importance_top10.png)
-*Top 10 most important features across models, highlighting the concerning presence of demographic variables (Gender, Race, Zip Code) among the most influential predictors.*
+*Top 10 most important features across models, providing a clear view of the most influential decision factors in loan approval predictions.*
 
-### LIME Local Explanations
-Individual prediction analysis using LIME highlighted:
-- **Case-by-Case Bias**: Specific instances where demographic features overrode creditworthiness
-- **Feature Interaction Effects**: How combinations of protected attributes amplified bias
-- **Decision Boundary Analysis**: Clear evidence of discriminatory decision thresholds
+### Global Model Interpretability
+![SHAP Summary Analysis](reports/figures/shap_summary.png)
+*SHAP summary plot revealing feature importance and impact on loan approval decisions across the entire dataset. Each dot represents a prediction, showing both feature importance and directional impact.*
 
+### Individual Prediction Explanations
 ![LIME Explanation Example](reports/figures/lime_explanation.png)
 *LIME explanation for a specific loan application showing how individual features contributed to the decision. Red bars indicate features that decrease approval likelihood, while green bars show features that increase it.*
 
-### Model Performance and Bias Analysis
+## Model Performance Analysis
 
-Our comprehensive model evaluation revealed significant insights about both predictive performance and bias patterns:
+### Multi-Model ROC Curve Comparison
+![ROC Curve Comparison](reports/figures/roc_comparison.png)
+*ROC curve comparison across all models (Random Forest, XGBoost, LightGBM, Logistic Regression) showing performance differences and potential bias amplification patterns across algorithms.*
 
+### Model Performance Metrics
+![Model Performance Summary](reports/figures/model_summary_table.png)
+*Comprehensive performance summary showing accuracy, precision, recall, F1-score, and AUC metrics. This table helps identify trade-offs between predictive performance and potential bias amplification across different algorithms.*
+
+### Prediction Accuracy Analysis
 ![Confusion Matrix](reports/figures/confusion_matrix.png)
 *Confusion matrix for the best-performing model showing prediction accuracy across different classes. The matrix helps identify systematic prediction errors that may disproportionately affect certain demographic groups.*
 
-![ROC Curve Comparison](reports/figures/roc_comparison.png)
-*ROC curve comparison across all models (Random Forest, XGBoost, LightGBM, Logistic Regression) demonstrating performance differences and helping identify which models may amplify or reduce bias through their prediction patterns.*
-
-![Model Performance Summary](reports/figures/model_summary_table.png)
-*Comprehensive model performance summary table showing accuracy, precision, recall, F1-score, and AUC metrics across all tested algorithms. This table helps identify trade-offs between predictive performance and potential bias amplification.*
-
-### Bias Detection Across Protected Groups
-
-Our systematic bias analysis revealed concerning patterns across multiple demographic dimensions:
-
-![Bias Analysis by Demographics](reports/figures/bias_analysis.png)
-*Detailed breakdown of loan approval rates by protected attributes, showing statistically significant disparities that persist across different model approaches. Each subplot compares group-specific approval rates against the overall population rate.*
-
-### Visual Evidence of Bias
-Our comprehensive visualization suite demonstrates:
-- **Approval Rate Disparities**: Significant gaps in approval rates across demographic groups with similar credit profiles
-- **ROC Curve Analysis**: Different model performance across demographic subgroups  
-- **Confusion Matrix Patterns**: Systematic prediction errors that disproportionately affect protected classes
-- **Cross-Model Consistency**: Bias patterns that persist across different algorithmic approaches
-
 ## Key Features
-- Comprehensive data preprocessing with bias-aware feature engineering
-- Multiple machine learning models (Logistic Regression, Random Forest, XGBoost, LightGBM)
-- Automated hyperparameter tuning with cross-validation
-- **Bias detection and analysis across protected attributes**
-- **Interactive visualizations and explainability with SHAP and LIME**
-- **Modular pipeline architecture for easy experimentation and bias testing**
+- ✅ **Production-Ready Pipeline**: Complete MLOps workflow with individual step execution
+- ✅ **Advanced Bias Detection**: Statistical analysis across multiple protected attributes  
+- ✅ **Multi-Model Comparison**: Random Forest, XGBoost, LightGBM, Logistic Regression
+- ✅ **Comprehensive Interpretability**: SHAP, LIME, and feature importance analysis
+- ✅ **Proper Data Handling**: Encoding preservation, missing value handling, validation splits
+- ✅ **Statistical Rigor**: Hypothesis testing, confidence intervals, sample size analysis
+- ✅ **Error Handling**: Graceful degradation and comprehensive logging
+- ✅ **Visualization Suite**: 15+ bias analysis and model evaluation plots
 
 ## Usage
 
-### Run the Pipeline
-
+### Quick Start
 ```bash
-# Run the full pipeline (default) - executes all 5 steps automatically
+# Complete pipeline execution (recommended)
 python loan_model.py
 
-# Or run specific steps individually (after data is available)
+# Individual step execution for debugging
 python loan_model.py data
-python loan_model.py feature-engineering
+python loan_model.py feature-engineering  
 python loan_model.py train-model
 python loan_model.py predict-model
 python loan_model.py visualize
-
-# See all available commands
-python loan_model.py --help
 ```
 
-### Alternative: Use Make commands
-
+### Expected Outputs
+The pipeline generates comprehensive analysis artifacts:
 ```bash
-# Run individual steps
-make data
-make features
-make train
-make predict
-make plots
+data/processed/          # Clean datasets with encoding mappings
+├── dataset.csv          # Processed training data
+├── features.csv         # Engineered features  
+├── labels.csv          # Target variables
+├── encoding_mappings.json  # Categorical mappings for bias analysis
+└── test_processed.csv   # Processed test data
 
-# Run full pipeline
-make pipeline
+models/                  # Trained models and metadata
+├── model.pkl           # Best performing model
+├── all_models.pkl      # All trained models with validation data
+├── scaler.pkl          # Feature scaling parameters
+└── model_metadata.json # Model selection and performance data
+
+reports/figures/         # Comprehensive visualization suite
+├── analysis_plots.png  # Main EDA dashboard
+├── bias_analysis.png   # Demographic bias analysis
+├── confusion_matrix.png # Model prediction accuracy
+├── roc_comparison.png  # Multi-model performance
+├── shap_summary.png    # Global feature importance
+├── lime_explanation.png # Individual prediction explanation
+└── feature_importance_*.png # Model-specific importance plots
 ```
 
 ## Development
-Easily set up a local development environment!
+Production-ready development environment setup:
 
-1. Clone the repo
+1. **Repository Setup**
     ```bash
     git clone git@github.com:aa3281/sterbling-ai-bias-bounty.git
+    cd sterbling-ai-bias-bounty
     ```
-2. Install the Python packages 
+
+2. **Environment Configuration**
     ```bash
+    # Python 3.10+ required
     pip install -e .
     ```
-3. Add your raw data files to `data/raw/`
+
+3. **Data Requirements**
     ```bash
-    # Place your data files:
-    # data/raw/loan_access_dataset.csv
-    # data/raw/test.csv
+    # Required data files:
+    data/raw/loan_access_dataset.csv  # Training data
+    data/raw/test.csv                 # Test data
     ```
 
 ## Built With
-- Python 3.10+
-- Pandas & NumPy for data manipulation
-- Scikit-learn for machine learning
-- XGBoost & LightGBM for gradient boosting
-- **SHAP & LIME for model explainability and bias detection**
-- **Matplotlib & Seaborn for bias visualization**
-- Typer for CLI interface
-- Loguru for logging
+- **Core ML**: scikit-learn, XGBoost, LightGBM, pandas, NumPy
+- **Bias Detection**: SHAP v0.20+, LIME, statistical analysis tools
+- **Visualization**: Matplotlib, Seaborn, comprehensive plotting pipeline
+- **Infrastructure**: Typer CLI, Loguru logging, automated error handling
+- **Development**: Python 3.10+, JSON-based configuration, modular architecture
 
 ## Troubleshooting
 
-### Memory Issues During Training
-If you encounter `TerminatedWorkerError` or memory issues:
+### Common Issues & Solutions
+- **Memory Issues**: Pipeline automatically uses `n_jobs=1` and optimized sampling
+- **Missing Data Files**: Clear error messages with specific file path requirements
+- **Dependency Conflicts**: Graceful degradation with installation guidance
+- **Visualization Errors**: Comprehensive error handling with fallback options
+- **Model Training Failures**: Detailed logging for debugging and recovery
 
-1. **Reduce dataset size for testing:**
-   ```bash
-   # Use a smaller sample of your data first
-   python loan_model.py train-model
-   ```
-
-2. **Monitor memory usage:**
-   ```bash
-   # Check available memory
-   free -h
-   # Monitor during training
-   top -p $(pgrep -f python)
-   ```
-
-3. **Reduce parallelization:**
-   The training script automatically uses `n_jobs=1` to prevent worker crashes.
-
-### Common Issues
-- **FileNotFoundError**: Make sure raw data files exist in `data/raw/`
-- **Missing dependencies**: Run `pip install -e .` to install all requirements
-- **Feature mismatch**: Ensure test data goes through same preprocessing as training data
-- **Pipeline runs too fast**: Check if raw data files exist in `data/raw/` - without them, steps may be skipped
-- **No outputs generated**: Verify all directories exist: `data/processed/`, `models/`, `reports/figures/`
-
-### Verifying Pipeline Execution
-
-To ensure the pipeline is working correctly:
-
+### Performance Monitoring
 ```bash
-# Check if all output files are generated
-ls -la data/processed/    # Should contain dataset.csv, features.csv, labels.csv
-ls -la models/           # Should contain model.pkl, scaler.pkl, model_metadata.json
-ls -la reports/figures/  # Should contain analysis_plots.png, shap_summary.png, etc.
-
-# Monitor pipeline execution with verbose logging
-python loan_model.py --help  # See available commands
+# Validate pipeline outputs
+ls -la data/processed/    # Verify data processing
+ls -la models/           # Check model artifacts  
+ls -la reports/figures/  # Confirm visualization generation
 ```
 
-## Project Organization
+## Impact and Future Work
 
-```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
+### Bias Mitigation Insights
+Our analysis provides actionable insights for fair lending practices:
+- **Demographic Monitoring**: Automated tracking of approval rate disparities
+- **Model Comparison**: Identification of algorithms that amplify or reduce bias
+- **Statistical Evidence**: Rigorous quantification of bias patterns for regulatory compliance
+- **Interpretability**: Clear explanations of individual loan decisions for transparency
+
+### Research Contributions
+- **Production Bias Pipeline**: Complete MLOps workflow for bias detection
+- **Statistical Framework**: Rigorous approach to bias measurement and significance testing
+- **Educational Resource**: Transformation of educational notebook into production system
+- **Open Source**: Fully documented, reproducible bias detection methodology
+
+## Acknowledgements
+- [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/) for project template
+- [SHAP](https://shap.readthedocs.io/) for explainable AI framework
+- [LIME](https://lime-ml.readthedocs.io/) for local interpretability
+- Sterbling AI Bias Bounty Challenge organizers
+- **Team**: Alessandra Adina & Sydney Nicole Calo
+
+--------
 ├── docs               <- A default mkdocs project; see www.mkdocs.org for details
 │
 ├── models             <- Trained and serialized models, model predictions, or model summaries
