@@ -88,10 +88,6 @@ We implemented a systematic bias detection approach with:
 ## What Biases Were Discovered - Statistical Evidence
 
 ### Key Statistical Findings
-Our comprehensive analysis revealed significant demographic patterns:
-
-![SHAP Summary Analysis](reports/figures/shap_summary.png)
-*SHAP analysis revealing feature importance patterns across demographic and creditworthiness variables.*
 
 ### Feature Importance Analysis Across Models
 
@@ -238,7 +234,7 @@ Successful test execution ensures:
 - ✅ Error handling gracefully manages edge cases without masking bias
 
 **Expected Test Output:**
-![Test Execution Results](reports/figures/test_results_screenshot.png)
+![Test Execution Results](docs/sample-unit-test.png)
 *Complete test suite execution showing all 72 tests passing, validating the integrity of the bias detection pipeline across data processing, model training, prediction, visualization, and orchestration components.*
 
 ## Usage
