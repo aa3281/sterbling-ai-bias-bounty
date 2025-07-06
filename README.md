@@ -9,7 +9,7 @@ A production-ready classification pipeline to detect and explain AI bias pattern
 ## Demo and Screenshot
 
 ### Pipeline Execution Demo
-![Pipeline Demo](reports/figures/pipeline_demo.gif)
+![Pipeline Demo](docs/sterbling-ai-bias-bounty-recording.gif)
 *Complete bias detection pipeline showing data processing, model training, and comprehensive bias analysis visualization generation.*
 
 ### Comprehensive Analysis Dashboard
