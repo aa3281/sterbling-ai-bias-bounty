@@ -126,7 +126,7 @@ def main(
     # Generate EDA plots exactly from notebook Cell 3
     generate_eda_plots(df)
     
-    # Generate model evaluation plots (if model exists)
+    # Generate model evaluation plots (now implemented)
     generate_model_evaluation_plots()
     
     print("Plot generation complete.")
@@ -245,35 +245,199 @@ def generate_eda_plots(df):
 
 
 def generate_model_evaluation_plots():
-    """Generate model evaluation plots from notebook."""
+    """Generate proper model evaluation plots with validation data."""
     print("Generating model evaluation plots...")
     
-    # This would need actual model predictions to generate ROC curves and confusion matrices
-    # from notebook cells 10 and 18
-    pass
+    # Check if we have models and validation data
+    from sterbling_ai_bias_bounty.config import MODELS_DIR
+    all_models_path = MODELS_DIR / "all_models.pkl"
+    
+    if not all_models_path.exists():
+        print("No trained models found. Skipping model evaluation plots.")
+        return
+    
+    try:
+        import joblib
+        from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, classification_report
+        
+        # Load all models and validation data
+        all_data = joblib.load(all_models_path)
+        models = all_data['models']
+        X_val, y_val = all_data['validation_data']
+        scaler = all_data['scaler']
+        
+        # Generate evaluation for each model
+        model_results = {}
+        
+        for model_name, model_info in models.items():
+            model = model_info['model']
+            requires_scaling = model_info['requires_scaling']
+            
+            # Prepare validation data
+            if requires_scaling:
+                X_val_processed = scaler.transform(X_val)
+            else:
+                X_val_processed = X_val
+            
+            # Generate predictions
+            y_pred = model.predict(X_val_processed)
+            y_prob = model.predict_proba(X_val_processed)[:, 1]
+            
+            model_results[model_name] = {
+                'y_pred': y_pred,
+                'y_prob': y_prob,
+                'auc': model_info['auc']
+            }
+        
+        # 1. Confusion Matrix for best model
+        best_model = max(model_results.keys(), key=lambda k: model_results[k]['auc'])
+        plt.figure(figsize=(8, 6))
+        conf_mat = confusion_matrix(y_val, model_results[best_model]['y_pred'])
+        sns.heatmap(conf_mat, annot=True, fmt='d', cmap='Blues')
+        plt.title(f'{best_model} Confusion Matrix (Validation Set)')
+        plt.xlabel('Predicted')
+        plt.ylabel('Actual')
+        plt.savefig(FIGURES_DIR / "confusion_matrix.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Confusion matrix saved to: {FIGURES_DIR / 'confusion_matrix.png'}")
+        
+        # 2. ROC Curve Comparison (proper approach)
+        plt.figure(figsize=(10, 8))
+        
+        for model_name, results in model_results.items():
+            fpr, tpr, _ = roc_curve(y_val, results['y_prob'])
+            auc_score = results['auc']
+            plt.plot(fpr, tpr, label=f'{model_name} (AUC = {auc_score:.3f})')
+        
+        plt.plot([0,1],[0,1],'k--', label='Random')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('ROC Curve Comparison (Validation Set)')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.savefig(FIGURES_DIR / "roc_comparison.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"ROC comparison saved to: {FIGURES_DIR / 'roc_comparison.png'}")
+        
+        # 3. Model Performance Summary
+        create_proper_model_summary_table(model_results, y_val)
+        
+    except Exception as e:
+        print(f"Error generating model evaluation plots: {e}")
+        import traceback
+        traceback.print_exc()
 
 
+def create_proper_model_summary_table(model_results, y_val):
+    """Create a proper model performance summary table."""
+    print("Creating model summary table...")
+    
+    try:
+        from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+        
+        # Create comprehensive summary DataFrame
+        summary_data = []
+        for model_name, results in model_results.items():
+            y_pred = results['y_pred']
+            auc_score = results['auc']
+            
+            summary_data.append({
+                'Model': model_name,
+                'AUC': f"{auc_score:.4f}",
+                'Accuracy': f"{accuracy_score(y_val, y_pred):.4f}",
+                'Precision': f"{precision_score(y_val, y_pred):.4f}",
+                'Recall': f"{recall_score(y_val, y_pred):.4f}",
+                'F1-Score': f"{f1_score(y_val, y_pred):.4f}"
+            })
+        
+        summary_df = pd.DataFrame(summary_data)
+        
+        # Create table visualization
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.axis('tight')
+        ax.axis('off')
+        
+        table = ax.table(cellText=summary_df.values,
+                        colLabels=summary_df.columns,
+                        cellLoc='center',
+                        loc='center')
+        table.auto_set_font_size(False)
+        table.set_fontsize(11)
+        table.scale(1.2, 1.8)
+        
+        # Style the table
+        for (i, j), cell in table.get_celld().items():
+            if i == 0:  # Header row
+                cell.set_facecolor('#4CAF50')
+                cell.set_text_props(weight='bold', color='white')
+            else:
+                cell.set_facecolor('#f0f0f0' if i % 2 == 0 else 'white')
+        
+        plt.title('Model Performance Summary (Validation Set)', fontsize=16, fontweight='bold', pad=20)
+        plt.savefig(FIGURES_DIR / "model_summary_table.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Model summary table saved to: {FIGURES_DIR / 'model_summary_table.png'}")
+        
+    except Exception as e:
+        print(f"Error creating model summary table: {e}")
+
+
+def generate_all_feature_importance_plots(model, feature_names):
+    """Generate feature importance plots for all models from notebook Cell 22-24."""
+    print("Generating comprehensive feature importance plots...")
+    
+    try:
+        if hasattr(model, 'feature_importances_'):
+            importances = model.feature_importances_
+            indices = np.argsort(importances)[::-1]
+            
+            # 1. Seaborn horizontal barplot (main style from notebook)
+            plt.figure(figsize=(10, 8))
+            sns.barplot(x=importances[indices], y=[feature_names[i] for i in indices])
+            plt.title('Feature Importance (Detailed View)')
+            plt.xlabel('Importance Score')
+            plt.ylabel('Features')
+            plt.tight_layout()
+            plt.savefig(FIGURES_DIR / "feature_importance_detailed.png", dpi=300, bbox_inches='tight')
+            plt.close()
+            
+            # 2. Top 10 features only (cleaner view)
+            plt.figure(figsize=(8, 6))
+            top_10_indices = indices[:10]
+            sns.barplot(x=importances[top_10_indices], y=[feature_names[i] for i in top_10_indices])
+            plt.title('Top 10 Most Important Features')
+            plt.xlabel('Importance Score')
+            plt.ylabel('Features')
+            plt.tight_layout()
+            plt.savefig(FIGURES_DIR / "feature_importance_top10.png", dpi=300, bbox_inches='tight')
+            plt.close()
+            
+            print(f"Feature importance plots saved to: {FIGURES_DIR}")
+            
+            # 3. XGBoost built-in plot style (if XGBoost model)
+            model_name = type(model).__name__
+            if 'XGB' in model_name:
+                try:
+                    from xgboost import plot_importance
+                    plt.figure(figsize=(8, 10))
+                    plot_importance(model, height=0.6)
+                    plt.title('XGBoost Feature Importance (Built-in)')
+                    plt.tight_layout()
+                    plt.savefig(FIGURES_DIR / "xgboost_builtin_importance.png", dpi=300, bbox_inches='tight')
+                    plt.close()
+                    print(f"XGBoost built-in importance saved to: {FIGURES_DIR / 'xgboost_builtin_importance.png'}")
+                except Exception as e:
+                    print(f"Could not create XGBoost built-in plot: {e}")
+        
+    except Exception as e:
+        print(f"Error generating feature importance plots: {e}")
+
+
+# Update the feature importance function call
 def generate_feature_importance_plots(model, feature_names):
     """Generate feature importance visualizations exactly from notebook Cell 22."""
-    print("Generating feature importance plots...")
-    
-    if hasattr(model, 'feature_importances_'):
-        importances = model.feature_importances_
-        indices = np.argsort(importances)[::-1]  # descending order
-        
-        # Use seaborn barplot exactly like notebook
-        plt.figure(figsize=(8, 6))
-        sns.barplot(x=importances[indices], y=[feature_names[i] for i in indices])
-        plt.title('Feature Importance')
-        plt.xlabel('Importance Score')
-        plt.ylabel('Features')
-        plt.tight_layout()
-        
-        importance_path = FIGURES_DIR / "feature_importance.png"
-        plt.savefig(importance_path, dpi=300, bbox_inches='tight')
-        plt.close()
-        print(f"Feature importance plot saved to: {importance_path}")
-
+    # Call the comprehensive version
+    generate_all_feature_importance_plots(model, feature_names)
 
 def generate_shap_plots(model, X_train, X_test, feature_names):
     """Generate SHAP visualizations exactly from notebook Cells 25-29."""
@@ -363,6 +527,9 @@ def generate_lime_plots(model, X_train, X_test, feature_names):
         import traceback
         traceback.print_exc()
 
+if __name__ == "__main__":
+    app()
+    app()
 if __name__ == "__main__":
     app()
     app()

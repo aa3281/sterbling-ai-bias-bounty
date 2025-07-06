@@ -103,12 +103,12 @@ def full_pipeline():
     try:
         # Step 1: Data processing
         logger.info("📊 Step 1: Processing raw data...")
-        data()
+        dataset.main(train_path, test_path, PROCESSED_DATA_DIR / "dataset.csv")
         logger.success("✅ Step 1 completed: Data processed")
         
         # Step 2: Feature engineering for training data
         logger.info("🔧 Step 2: Engineering features for training data...")
-        feature_engineering()
+        features.main(PROCESSED_DATA_DIR / "dataset.csv", PROCESSED_DATA_DIR / "features.csv")
         logger.success("✅ Step 2a completed: Training features engineered")
         
         # Step 2b: Feature engineering for test data
@@ -123,17 +123,17 @@ def full_pipeline():
         
         # Step 3: Model training
         logger.info("🤖 Step 3: Training models...")
-        train_model()
+        train.main(PROCESSED_DATA_DIR / "features.csv", PROCESSED_DATA_DIR / "labels.csv", MODELS_DIR / "model.pkl")
         logger.success("✅ Step 3 completed: Models trained")
         
         # Step 4: Generate predictions
         logger.info("🎯 Step 4: Generating predictions...")
-        predict_model()
+        predict.main(PROCESSED_DATA_DIR / "test_features.csv", MODELS_DIR / "model.pkl", PROCESSED_DATA_DIR / "test_predictions.csv")
         logger.success("✅ Step 4 completed: Predictions generated")
         
         # Step 5: Create visualizations
         logger.info("📈 Step 5: Creating visualizations...")
-        visualize()
+        plots.main(PROCESSED_DATA_DIR / "dataset.csv", FIGURES_DIR / "analysis_plots.png")
         logger.success("✅ Step 5 completed: Visualizations created")
         
         logger.success("🎉 Full pipeline execution complete!")

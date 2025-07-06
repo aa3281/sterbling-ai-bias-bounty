@@ -4,28 +4,122 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-A classification model to detect and explain unusual patterns in AI decision-making for mortgage loan approvals
+A classification model to detect and explain unusual patterns in AI decision-making for mortgage loan approvals with comprehensive bias identification and mitigation techniques.
 
 ## Demo and Screenshot
 ![](reports/figures/analysis_plots.png)
+
+## What We Built - Bias Identification
+
+We conducted our AI/Data Science process with the primary goal of demonstrating model "accuracy" while simultaneously identifying and mitigating bias in loan approval decisions. Our comprehensive approach included:
+
+### AI Bias Detection Framework
+- **Exploratory Data Analysis (EDA)**: Systematic examination of approval rates across demographic groups including gender, race, age groups, and citizenship status
+- **Pattern Recognition**: Identification of systematic disparities in loan approval rates that cannot be explained by creditworthiness alone
+- **False Positive/Negative Analysis**: Deep dive into prediction errors to understand how they disproportionately affect protected groups
+- **Statistical Significance Testing**: Quantitative validation of observed bias patterns
+
+### Why This Matters
+False positives (incorrectly approving risky loans) and false negatives (incorrectly denying qualified applicants) have different impacts:
+- **False Negatives**: Deny opportunities to qualified applicants, potentially perpetuating economic inequality
+- **False Positives**: May lead to predatory lending practices in vulnerable communities
+- **Disparate Impact**: When these errors disproportionately affect certain demographic groups, they constitute algorithmic bias
+
+## How the Model Works - Model Design and Justification
+
+### Interpretable Model Architecture
+Our model design prioritizes transparency and interpretability over black-box performance, using ensemble methods that provide clear feature importance rankings:
+
+**Primary Algorithms:**
+- **Random Forest**: Provides robust feature importance scores and handles non-linear relationships
+- **Logistic Regression**: Offers clear coefficient interpretability for linear relationships
+- **LightGBM**: Efficient gradient boosting with built-in feature importance
+- **XGBoost**: Industry-standard gradient boosting with comprehensive interpretability tools
+
+### Feature Engineering Strategy
+We implemented minimal but targeted feature engineering to maintain interpretability:
+- **Log Transformations**: Applied to skewed numerical features (loan amounts, income) to normalize distributions
+- **Categorical Encoding**: Label encoding for demographic and categorical variables
+- **Missing Value Imputation**: Mode imputation for categorical variables, median for numerical
+- **No Complex Interactions**: Deliberately avoided complex feature interactions to maintain model transparency
+
+### Model Selection Criteria
+- **AUC Score**: Primary metric for predictive performance
+- **Cross-Validation**: 5-fold CV to ensure robust performance estimates  
+- **Stratified Sampling**: Maintains class balance in train/validation splits
+- **Interpretability**: Feature importance must be extractable and meaningful
+
+## How We Approached Fairness - Bias Tools and Techniques
+
+### Red Team Approach
+We implemented a collaborative red-teaming methodology where team members alternated between:
+- **Model Development**: Building and optimizing predictive models
+- **Bias Detection**: Actively searching for discriminatory patterns and edge cases
+- **Code Review**: Cross-validation of implementation and bias detection logic
+
+### AI Bias Tools Integration
+
+**Data-Level Bias Detection:**
+- Statistical parity analysis across protected attributes
+- Demographic distribution analysis in training data
+- Historical bias identification in loan approval patterns
+
+**Governance-Level Controls:**
+- Model versioning and experiment tracking
+- Bias metric monitoring and alerting systems  
+- Documentation of model decisions and trade-offs
+
+**Model-Level Interpretability:**
+- SHAP (SHapley Additive exPlanations) for global and local feature importance
+- LIME (Local Interpretable Model-agnostic Explanations) for individual prediction explanations
+- Feature importance rankings across all model types
+
+### Vulnerability Scanning and Code Reviewability
+- **ModelScan Integration**: Automated scanning for potential model vulnerabilities and bias indicators
+- **Data-Driven Code Review**: Systematic evaluation of data processing pipelines for bias introduction points
+- **Reproducibility Standards**: Version-controlled data processing and model training pipelines
+
+## What Biases Were Discovered - Interpretability Highlights
+
+### Key Findings from SHAP Analysis
+Our SHAP analysis revealed concerning patterns in feature importance:
+
+**High-Impact Bias Indicators:**
+- **Gender and Race**: Disproportionate influence on loan decisions beyond creditworthiness metrics
+- **Zip Code Clustering**: Geographic discrimination patterns that may proxy for redlining
+- **Age Group Bias**: Systematic disadvantages for certain age demographics
+
+**Credit-Related Features (Expected):**
+- Credit Score: Appropriately high importance for loan decisions
+- Income Level: Strong predictor with legitimate business justification
+- Employment Type: Reasonable consideration for loan risk assessment
+
+### LIME Local Explanations
+Individual prediction analysis using LIME highlighted:
+- **Case-by-Case Bias**: Specific instances where demographic features overrode creditworthiness
+- **Feature Interaction Effects**: How combinations of protected attributes amplified bias
+- **Decision Boundary Analysis**: Clear evidence of discriminatory decision thresholds
+
+### Visual Evidence of Bias
+Our comprehensive visualization suite demonstrates:
+- **Approval Rate Disparities**: Significant gaps in approval rates across demographic groups with similar credit profiles
+- **ROC Curve Analysis**: Different model performance across demographic subgroups
+- **Confusion Matrix Patterns**: Systematic prediction errors that disproportionately affect protected classes
 
 ## Key Features
 - Comprehensive data preprocessing with bias-aware feature engineering
 - Multiple machine learning models (Logistic Regression, Random Forest, XGBoost, LightGBM)
 - Automated hyperparameter tuning with cross-validation
-- Bias detection and analysis across protected attributes
-- Interactive visualizations and explainability with SHAP and LIME
-- Modular pipeline architecture for easy experimentation
+- **Bias detection and analysis across protected attributes**
+- **Interactive visualizations and explainability with SHAP and LIME**
+- **Modular pipeline architecture for easy experimentation and bias testing**
 
 ## Usage
 
 ### Run the Pipeline
 
 ```bash
-# FIRST: Set up directories and check data files
-python setup_data.py
-
-# THEN: Run the full pipeline (default) - executes all 5 steps automatically
+# Run the full pipeline (default) - executes all 5 steps automatically
 python loan_model.py
 
 # Or run specific steps individually (after data is available)
@@ -72,12 +166,12 @@ Easily set up a local development environment!
     ```
 
 ## Built With
-- Python 3.10
+- Python 3.10+
 - Pandas & NumPy for data manipulation
 - Scikit-learn for machine learning
 - XGBoost & LightGBM for gradient boosting
-- SHAP & LIME for model explainability
-- Matplotlib & Seaborn for visualization
+- **SHAP & LIME for model explainability and bias detection**
+- **Matplotlib & Seaborn for bias visualization**
 - Typer for CLI interface
 - Loguru for logging
 
