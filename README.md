@@ -7,7 +7,18 @@
 A classification model to detect and explain unusual patterns in AI decision-making for mortgage loan approvals with comprehensive bias identification and mitigation techniques.
 
 ## Demo and Screenshot
-![](reports/figures/analysis_plots.png)
+
+### Pipeline Execution Demo
+![Pipeline Demo](reports/figures/pipeline_demo.gif)
+*Animated demonstration of the complete bias detection pipeline showing data processing, model training, and bias analysis visualization generation.*
+
+### Comprehensive Analysis Dashboard
+![Analysis Dashboard](reports/figures/analysis_plots.png)
+*Main analysis dashboard showing EDA, feature distributions, and bias patterns across demographic groups.*
+
+### Interactive Bias Detection Results
+![Bias Detection Results](reports/figures/bias_analysis.png)
+*Real-time bias detection showing approval rate disparities across protected attributes with statistical significance indicators.*
 
 ## What We Built - Bias Identification
 
@@ -18,6 +29,9 @@ We conducted our AI/Data Science process with the primary goal of demonstrating 
 - **Pattern Recognition**: Identification of systematic disparities in loan approval rates that cannot be explained by creditworthiness alone
 - **False Positive/Negative Analysis**: Deep dive into prediction errors to understand how they disproportionately affect protected groups
 - **Statistical Significance Testing**: Quantitative validation of observed bias patterns
+
+![Bias Analysis Dashboard](reports/figures/bias_analysis.png)
+*Comprehensive bias analysis showing approval rate disparities across protected attributes (Gender, Race, Age Group, Citizenship Status). Red dashed lines indicate overall approval rates, highlighting systematic disparities that cannot be explained by creditworthiness alone.*
 
 ### Why This Matters
 False positives (incorrectly approving risky loans) and false negatives (incorrectly denying qualified applicants) have different impacts:
@@ -94,17 +108,57 @@ Our SHAP analysis revealed concerning patterns in feature importance:
 - Income Level: Strong predictor with legitimate business justification
 - Employment Type: Reasonable consideration for loan risk assessment
 
+![SHAP Summary Analysis](reports/figures/shap_summary.png)
+*SHAP summary plot showing feature importance and impact on loan approval decisions. Notice the disproportionate influence of demographic features (highlighted areas) compared to creditworthiness metrics.*
+
+### Feature Importance Analysis
+
+Our feature importance analysis across different model types revealed consistent patterns of potential bias:
+
+![Random Forest Feature Importance](reports/figures/feature_importance_detailed.png)
+*Random Forest feature importance showing the relative contribution of each feature to loan approval decisions. Notice how demographic features rank higher than expected compared to financial metrics.*
+
+![XGBoost Built-in Feature Importance](reports/figures/xgboost_builtin_importance.png)
+*XGBoost built-in feature importance plot demonstrating which features the gradient boosting algorithm considers most predictive. The prominence of protected attributes is concerning from a fairness perspective.*
+
+![Top 10 Feature Importance](reports/figures/feature_importance_top10.png)
+*Top 10 most important features across models, highlighting the concerning presence of demographic variables (Gender, Race, Zip Code) among the most influential predictors.*
+
 ### LIME Local Explanations
 Individual prediction analysis using LIME highlighted:
 - **Case-by-Case Bias**: Specific instances where demographic features overrode creditworthiness
 - **Feature Interaction Effects**: How combinations of protected attributes amplified bias
 - **Decision Boundary Analysis**: Clear evidence of discriminatory decision thresholds
 
+![LIME Explanation Example](reports/figures/lime_explanation.png)
+*LIME explanation for a specific loan application showing how individual features contributed to the decision. Red bars indicate features that decrease approval likelihood, while green bars show features that increase it.*
+
+### Model Performance and Bias Analysis
+
+Our comprehensive model evaluation revealed significant insights about both predictive performance and bias patterns:
+
+![Confusion Matrix](reports/figures/confusion_matrix.png)
+*Confusion matrix for the best-performing model showing prediction accuracy across different classes. The matrix helps identify systematic prediction errors that may disproportionately affect certain demographic groups.*
+
+![ROC Curve Comparison](reports/figures/roc_comparison.png)
+*ROC curve comparison across all models (Random Forest, XGBoost, LightGBM, Logistic Regression) demonstrating performance differences and helping identify which models may amplify or reduce bias through their prediction patterns.*
+
+![Model Performance Summary](reports/figures/model_summary_table.png)
+*Comprehensive model performance summary table showing accuracy, precision, recall, F1-score, and AUC metrics across all tested algorithms. This table helps identify trade-offs between predictive performance and potential bias amplification.*
+
+### Bias Detection Across Protected Groups
+
+Our systematic bias analysis revealed concerning patterns across multiple demographic dimensions:
+
+![Bias Analysis by Demographics](reports/figures/bias_analysis.png)
+*Detailed breakdown of loan approval rates by protected attributes, showing statistically significant disparities that persist across different model approaches. Each subplot compares group-specific approval rates against the overall population rate.*
+
 ### Visual Evidence of Bias
 Our comprehensive visualization suite demonstrates:
 - **Approval Rate Disparities**: Significant gaps in approval rates across demographic groups with similar credit profiles
-- **ROC Curve Analysis**: Different model performance across demographic subgroups
+- **ROC Curve Analysis**: Different model performance across demographic subgroups  
 - **Confusion Matrix Patterns**: Systematic prediction errors that disproportionately affect protected classes
+- **Cross-Model Consistency**: Bias patterns that persist across different algorithmic approaches
 
 ## Key Features
 - Comprehensive data preprocessing with bias-aware feature engineering
